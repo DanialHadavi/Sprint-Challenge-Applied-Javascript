@@ -20,6 +20,10 @@ function Header() {
   tem.classList.add("temp");
 
   headerDiv.append(dateSpan, title, tem);
+
+  dateSpan.textContent = "SMARCH 28, 2019";
+  title.textContent = "Lambda Times";
+  tem.textContent = "98°";
   return headerDiv;
 }
 
