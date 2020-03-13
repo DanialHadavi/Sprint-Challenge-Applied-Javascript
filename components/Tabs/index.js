@@ -19,14 +19,14 @@ function newTab(array) {
 axios
   .get(`https://lambda-times-backend.herokuapp.com/topics`)
   .then(response => {
-    myArray = response.data.topics.values();
-    //myArray1 = response.data.topics;
-    //console.log(myArray1);
+    console.log(response);
     const myInfo = response.data.topics;
-    const topics = document.querySelector(".topics");
-    const tabInfo = newTab(myInfo);
-    console.log(tabInfo);
-    topics.appendChild(tabInfo);
+    myInfo.forEach(item => {
+      const topics = document.querySelector(".topics");
+      const tabInfo = newTab(item);
+      console.log(tabInfo);
+      topics.appendChild(tabInfo);
+    });
   })
   .catch(error => {
     console.log("there is an error", error);

@@ -6,45 +6,6 @@
 // This won't be as easy as just iterating over an array though.
 // Create a function that will programmatically create the following DOM component:
 
-axios
-  .get("https://lambda-times-backend.herokuapp.com/articles")
-  .then(response => {
-    console.log(response);
-    const cardInfo = response.data.articles.javascript;
-    console.log(cardInfo);
-    myCards(cardInfo);
-    const cardsContainer = document.querySelector(".cards-container");
-    const cardInfo2 = myCards(cardInfo);
-    cardsContainer.append(cardInfo2);
-  })
-  .catch(error => {
-    console.log(error);
-  });
-
-function myCards(obj) {
-  const card = document.createElement("div"),
-    headline = document.createElement("div"),
-    author = document.createElement("div"),
-    imgContainer = document.createElement("div"),
-    image = document.createElement("img"),
-    authorName = document.createElement("span");
-
-  card.classList.add("card");
-  headline.classList.add("headline");
-  author.classList.add("author");
-  imgContainer.classList.add("img-container");
-
-  card.append(headline, author);
-  author.append(imgContainer, authorName);
-  imgContainer.append(image);
-
-  headline.textContent = obj.headline;
-  image.src = obj.authorPhoto;
-  authorName.textContent = obj.authorName;
-
-  return card;
-}
-
 //
 // <div class="card">
 //   <div class="headline">{Headline of article}</div>
@@ -57,3 +18,45 @@ function myCards(obj) {
 // </div>
 //
 // Create a card for each of the articles and add the card to the DOM.
+
+function myCards(obj) {
+  const card = document.createElement("div");
+  const headline = document.createElement("div");
+  const author = document.createElement("div");
+  const imgContainer = document.createElement("div");
+  const image = document.createElement("img");
+  const authorName = document.createElement("span");
+
+  card.classList.add("card");
+  headline.classList.add("headline");
+  author.classList.add("author");
+  imgContainer.classList.add("img-container");
+
+  headline.textContent = obj.headline;
+  image.src = obj.authorPhoto;
+  authorName.textContent = obj.authorName;
+
+  card.append(headline);
+  card.append(author);
+  author.append(imgContainer);
+  imgContainer.append(image);
+  author.append(authorName);
+
+  return card;
+}
+
+axios
+  .get("https://lambda-times-backend.herokuapp.com/articles")
+  .then(response => {
+    console.log(response);
+    Object.values(response.data.articles).forEach(item => {
+      item.forEach(item2 => {
+        //console.log(artloop);
+        const cardsContainer = document.querySelector(".cards-container");
+        cardsContainer.append(myCards(item2));
+      });
+    });
+  })
+  .catch(error => {
+    console.log("you have an error", error);
+  });
